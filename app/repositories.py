@@ -3,14 +3,15 @@ from typing import TypeVar, Annotated, Type
 from fastapi import Depends
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.orm import DeclarativeBase
 
-from app.models import Base
+from core.stub import Stub
 
-Model = TypeVar("Model", bound=Type[Base])
+Model = TypeVar("Model", bound=Type[DeclarativeBase])
 
 
 class SomeDataRepository:
-    def __init__(self, session: Annotated[AsyncSession, Depends(AsyncSession)]):
+    def __init__(self, session: Annotated[AsyncSession, Depends(Stub(AsyncSession))]):
         self._session = session
 
     async def get_all(self, model: Model) -> list[Model]:
