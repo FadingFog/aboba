@@ -4,7 +4,7 @@ from typing import Annotated
 
 from fastapi import Depends
 
-from app.models import SomeDataA, SomeDataB
+from app.models import SomeDataA, SomeDataB, SomeDataC
 from app.repositories import SomeDataRepository
 
 
@@ -16,6 +16,7 @@ class SomeDataService:
         results = await asyncio.gather(*[
             self._repository.get_all(SomeDataA),
             self._repository.get_all(SomeDataB),
+            self._repository.get_all(SomeDataC),
         ])
 
         results = list(itertools.chain(*results))

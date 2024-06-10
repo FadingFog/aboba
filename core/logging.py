@@ -8,3 +8,6 @@ def get_logger():
     _logger.info('Starting the app logging...')
 
     return _logger
+
+
+logger: logging.Logger = get_logger()
