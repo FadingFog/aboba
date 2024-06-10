@@ -5,19 +5,40 @@ from typing import AsyncGenerator
 from fastapi import FastAPI
 from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_async_engine, async_scoped_session
 
+from app.models import BaseA, BaseB
 
-def create_session_maker() -> async_sessionmaker[AsyncSession]:
+
+def get_binds():
     database_uri = os.getenv("DATABASE_URI")
 
-    engine = create_async_engine(
+    engine_1 = create_async_engine(
         database_uri,
         pool_size=15,
         max_overflow=15,
         connect_args={
-            "timeout": 5,
+            "timeout": 2,
         },
     )
-    return async_sessionmaker(engine, expire_on_commit=False)
+    engine_2 = create_async_engine(
+        database_uri,
+        pool_size=15,
+        max_overflow=15,
+        connect_args={
+            "timeout": 2,
+        },
+    )
+    binds = {
+        BaseA: engine_1,
+        BaseB: engine_2,
+    }
+    return binds
+
+
+def create_session_maker() -> async_sessionmaker[AsyncSession]:
+    return async_sessionmaker(
+        binds=get_binds(),
+        expire_on_commit=False
+    )
 
 
 async def new_session(
