@@ -12,7 +12,7 @@ def init_routers(app: FastAPI):
     app.include_router(root_router)
 
 
-@root_router.get("/", response_model=SomeData)
+@root_router.get("/", response_model=list[SomeData])
 async def get_some_data(
     some_data_service: Annotated[SomeDataService, Depends()],
 ):

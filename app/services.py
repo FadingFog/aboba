@@ -1,4 +1,5 @@
 import asyncio
+import itertools
 from typing import Annotated
 
 from fastapi import Depends
@@ -17,5 +18,6 @@ class SomeDataService:
             self._repository.get_all(SomeDataB),
         ])
 
+        results = list(itertools.chain(*results))
         result = sorted(results, key=lambda i: i.id)
         return result
