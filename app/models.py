@@ -2,18 +2,16 @@ from sqlalchemy import String
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
 
 
-class Base(DeclarativeBase):
+class BaseA(DeclarativeBase):
     __abstract__ = True
 
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
 
 
-class BaseA(Base):
+class BaseB(DeclarativeBase):
     __abstract__ = True
 
-
-class BaseB(Base):
-    __abstract__ = True
+    id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
 
 
 class SomeDataA(BaseA):
