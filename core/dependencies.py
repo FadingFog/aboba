@@ -1,36 +1,32 @@
 import os
 from functools import partial
-from typing import AsyncGenerator
+from typing import AsyncGenerator, Type
 
 from fastapi import FastAPI
-from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_async_engine
+from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_async_engine, AsyncEngine
 
-from app.models import BaseA, BaseB
+from app.models import BaseA, BaseB, BaseC
 
 
-def get_binds():
+def get_binds() -> dict[Type[BaseA | BaseB | BaseC], AsyncEngine]:
     database_uri = os.getenv("DATABASE_URI")
-
-    engine_1 = create_async_engine(
-        database_uri,
-        pool_size=15,
-        max_overflow=15,
-        connect_args={
-            "timeout": 2,
-        },
-    )
-    engine_2 = create_async_engine(
-        database_uri,
-        pool_size=15,
-        max_overflow=15,
-        connect_args={
-            "timeout": 2,
-        },
-    )
-    binds = {
-        BaseA: engine_1,
-        BaseB: engine_2,
+    sources_mapping = {  # Assume that sources have different URI
+        BaseA: database_uri,
+        BaseB: database_uri,
+        BaseC: database_uri,
     }
+
+    binds = {}
+    for model, source_uri in sources_mapping.items():
+        binds[model] = create_async_engine(
+            source_uri,
+            pool_size=15,
+            max_overflow=15,
+            connect_args={
+                "timeout": 2,
+            },
+        )
+
     return binds
 
 
