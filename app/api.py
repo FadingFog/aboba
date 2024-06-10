@@ -1,12 +1,18 @@
 from typing import Annotated
 
-from fastapi import Depends
+from fastapi import Depends, APIRouter, FastAPI
 
-from app.main import app
+from app.schemas import SomeData
 from app.services import SomeDataService
 
+root_router = APIRouter()
 
-@app.get("/")
+
+def init_routers(app: FastAPI):
+    app.include_router(root_router)
+
+
+@root_router.get("/", response_model=SomeData)
 async def get_some_data(
     some_data_service: Annotated[SomeDataService, Depends()],
 ):
