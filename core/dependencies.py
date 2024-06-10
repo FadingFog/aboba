@@ -52,3 +52,4 @@ async def new_session(
 def init_dependencies(app: FastAPI):
     session_maker = create_session_maker()
     app.dependency_overrides[AsyncSession] = partial(new_session, session_maker)
+    app.dependency_overrides[async_sessionmaker] = create_session_maker
