@@ -1,5 +1,16 @@
 import logging
+import sys
 from functools import lru_cache
+
+
+logging.basicConfig(
+    level=logging.DEBUG,
+    format="%(asctime)s [%(process)d] [%(levelname)s] %(message)s",
+    handlers=[
+        logging.StreamHandler(sys.stdout)
+    ]
+)
+logging.getLogger("sqlalchemy.engine").setLevel(logging.INFO)
 
 
 @lru_cache(maxsize=1)
