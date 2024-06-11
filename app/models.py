@@ -26,7 +26,7 @@ class SomeDataCommon:
 
 
 class SomeDataA(SomeDataCommon, BaseA):
-    __tablename__ = 'some_data'
+    __tablename__ = 'some_data1'
 
 
 class SomeDataB(SomeDataCommon, BaseB):

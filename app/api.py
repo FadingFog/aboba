@@ -16,4 +16,5 @@ def init_routers(app: FastAPI):
 async def get_some_data(
     some_data_service: Annotated[SomeDataService, Depends()],
 ):
-    return await some_data_service.get_data()
+    """Single access point for retrieving data from multiple data sources."""
+    return await some_data_service.get_all_data()

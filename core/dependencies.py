@@ -10,12 +10,13 @@ from app.models import BaseA, BaseB, BaseC
 
 def get_binds() -> dict[Type[BaseA | BaseB | BaseC], AsyncEngine]:
     database_uri = os.getenv("DATABASE_URI")
-    sources_mapping = {  # Assume that sources have different URI
+    sources_mapping = {  # Map sources URI per model
         BaseA: database_uri,
         BaseB: database_uri,
         BaseC: database_uri,
     }
 
+    # Create an engine for each model
     binds = {}
     for model, source_uri in sources_mapping.items():
         binds[model] = create_async_engine(
