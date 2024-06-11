@@ -13,6 +13,7 @@ class SomeDataService:
     Layer between API routers and repository layer.
     Implements business logic, perform validations & etc.
     """
+
     def __init__(self, repository: Annotated[SomeDataRepository, Depends()]):
         self._repository = repository
 
