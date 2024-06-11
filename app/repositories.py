@@ -8,7 +8,7 @@ from sqlalchemy.orm import DeclarativeBase
 from core.logging import logger
 from core.stub import Stub
 
-Model = TypeVar("Model", bound=Type[DeclarativeBase])
+ModelClass = TypeVar("ModelClass", bound=Type[DeclarativeBase])
 
 
 class SomeDataRepository:
@@ -24,7 +24,7 @@ class SomeDataRepository:
         # https://docs.sqlalchemy.org/en/20/orm/session_basics.html#session-faq-threadsafe
         self._session_maker = session_maker
 
-    async def get_all_by_model(self, model: Model) -> tuple[Model]:
+    async def get_all_by_model(self, model: ModelClass) -> tuple[ModelClass]:
         """Get data from appropriate source based on passed model"""
         try:
             async with self._session_maker() as session:
@@ -38,7 +38,7 @@ class SomeDataRepository:
 
         return objects
 
-    async def get_all_by_model_raw(self, model: Model) -> tuple[Model]:
+    async def get_all_by_model_raw(self, model: ModelClass) -> tuple[ModelClass]:
         """Get data from appropriate source based on passed model using raw SQL"""
         try:
             async with self._session_maker() as session:
@@ -54,3 +54,11 @@ class SomeDataRepository:
             objects = tuple()
 
         return objects
+
+    async def create(self, obj: ModelClass) -> ModelClass:
+        # Since I don't know (for now) how to handle ID duplication in multiple tables
+        # it will be handled externally (like in tests)
+        self._session.add(obj)
+        # Commit instead of flush because of different sessions in create() & get_all_by_model_raw() methods
+        await self._session.commit()
+        return obj

@@ -1,4 +1,5 @@
 import asyncio
+import logging
 import os
 from functools import partial
 from typing import AsyncGenerator, Type
@@ -15,6 +16,7 @@ from core.dependencies import create_session_maker, get_binds, BaseModel
 pytest_plugins = ["tests.fixtures"]
 
 load_dotenv()
+logging.getLogger("sqlalchemy.engine").setLevel(logging.WARNING)
 
 
 @pytest.fixture(scope='session', autouse=True)
