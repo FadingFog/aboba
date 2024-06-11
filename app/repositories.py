@@ -12,9 +12,7 @@ Model = TypeVar("Model", bound=Type[DeclarativeBase])
 
 
 class SomeDataRepository:
-    """
-    Interface for interacting with database.
-    """
+    """Interface for interacting with database."""
 
     def __init__(
         self,
@@ -22,9 +20,9 @@ class SomeDataRepository:
         session_maker: Annotated[async_sessionmaker, Depends(Stub(async_sessionmaker))],
     ):
         self._session = session
-        self._session_maker = session_maker
         # Session maker is required when accessing more than one database at a time
         # https://docs.sqlalchemy.org/en/20/orm/session_basics.html#session-faq-threadsafe
+        self._session_maker = session_maker
 
     async def get_all_by_model(self, model: Model) -> tuple[Model]:
         """Get data from appropriate source based on passed model"""
