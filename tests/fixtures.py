@@ -1,5 +1,7 @@
 import pytest
+from fastapi import APIRouter
 
+from app.api import root_router
 from app.models import SomeDataCommon
 from app.repositories import SomeDataRepository, ModelClass
 from app.services import SomeDataService
@@ -13,6 +15,11 @@ async def some_data_repo(test_session, test_session_maker) -> SomeDataRepository
 @pytest.fixture
 async def some_data_service(some_data_repo) -> SomeDataService:
     return SomeDataService(some_data_repo)
+
+
+@pytest.fixture
+async def router() -> APIRouter:
+    return root_router
 
 
 @pytest.fixture
