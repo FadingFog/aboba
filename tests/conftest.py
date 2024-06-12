@@ -49,10 +49,10 @@ async def test_session(test_session_maker) -> AsyncGenerator[AsyncSession, None]
         yield session
 
 
-@pytest.fixture(scope='session')
-def client(test_binds) -> TestClient:
+@pytest.fixture
+def client(test_binds, test_session) -> TestClient:
     app = create_app()
-    app.dependency_overrides[AsyncSession] = partial(test_session, test_session_maker)
+    app.dependency_overrides[AsyncSession] = lambda: test_session
     app.dependency_overrides[async_sessionmaker] = partial(create_session_maker, test_binds)
 
     test_client = TestClient(app)
