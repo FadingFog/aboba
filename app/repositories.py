@@ -25,7 +25,7 @@ class SomeDataRepository:
         # https://docs.sqlalchemy.org/en/20/orm/session_basics.html#session-faq-threadsafe
         self._session_maker = session_maker
 
-    async def get_all_by_model(self, model: ModelClass) -> tuple[ModelClass]:
+    async def get_all_by_model(self, model: ModelClass) -> tuple[Model]:
         """Get data from appropriate source based on passed model"""
         try:
             async with self._session_maker() as session:
@@ -39,7 +39,7 @@ class SomeDataRepository:
 
         return objects
 
-    async def get_all_by_model_raw(self, model: ModelClass) -> tuple[ModelClass]:
+    async def get_all_by_model_raw(self, model: ModelClass) -> tuple[Model]:
         """Get data from appropriate source based on passed model using raw SQL"""
         try:
             async with self._session_maker() as session:
