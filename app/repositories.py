@@ -8,7 +8,8 @@ from sqlalchemy.orm import DeclarativeBase
 from core.logging import logger
 from core.stub import Stub
 
-ModelClass = TypeVar("ModelClass", bound=Type[DeclarativeBase])
+Model = TypeVar("Model", bound=DeclarativeBase)
+ModelClass = Type[Model]
 
 
 class SomeDataRepository:
@@ -55,9 +56,10 @@ class SomeDataRepository:
 
         return objects
 
-    async def create(self, obj: ModelClass) -> ModelClass:
-        # Since I don't know (for now) how to handle ID duplication in multiple tables
-        # it will be handled externally (like in tests)
+    async def create(self, obj: Model) -> Model:
+        """"""
+        # Since I don't know (for now) how to handle ID duplication in multiple tables/sources
+        # it will be handled externally (like in tests with initial_id)
         self._session.add(obj)
         # Commit instead of flush because of different sessions in create() & get_all_by_model_raw() methods
         await self._session.commit()
