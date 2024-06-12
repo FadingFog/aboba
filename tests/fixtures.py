@@ -2,11 +2,17 @@ import pytest
 
 from app.models import SomeDataCommon
 from app.repositories import SomeDataRepository, ModelClass
+from app.services import SomeDataService
 
 
 @pytest.fixture
 async def some_data_repo(test_session, test_session_maker) -> SomeDataRepository:
     return SomeDataRepository(test_session, test_session_maker)
+
+
+@pytest.fixture
+async def some_data_service(some_data_repo) -> SomeDataService:
+    return SomeDataService(some_data_repo)
 
 
 @pytest.fixture
