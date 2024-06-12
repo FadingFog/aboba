@@ -57,7 +57,7 @@ class SomeDataRepository:
         return objects
 
     async def create(self, obj: Model) -> Model:
-        """"""
+        """Save object to database"""
         # Since I don't know (for now) how to handle ID duplication in multiple tables/sources
         # it will be handled externally (like in tests with initial_id)
         self._session.add(obj)
