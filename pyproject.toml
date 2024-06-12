@@ -21,7 +21,7 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^8.2.2"
-pytest-asyncio = "^0.23.4"
+pytest-asyncio = "^0.21.2"
 
 
 [tool.pytest.ini_options]
